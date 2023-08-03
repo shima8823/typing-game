@@ -19,7 +19,6 @@ func main() {
 
 	scanner := bufio.NewScanner(os.Stdin)
 	score := 0
-	done := make(chan bool)
 
 	go func() {
 		for {
@@ -37,13 +36,8 @@ func main() {
 		}
 	}()
 
-	go func() {
-		time.Sleep(60000 * time.Millisecond)
-		done <- true
-	}()
-
 	select {
-	case <-done:
+	case <-time.After(5 * time.Second):
 		fmt.Println("Time's up!")
 		fmt.Println("Score:", score)
 	}
