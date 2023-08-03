@@ -3,41 +3,33 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math/rand"
+	"github.com/shima8823/typing-game/randomword"
 	"os"
 	"time"
 )
 
 func main() {
-	words := []string{"apple", "banana", "cherry", "date", "elderberry",
-		"fig", "grape", "honeydew", "iceberg lettuce", "jackfruit",
-		"kiwi", "lemon", "mango", "nectarine", "orange", "pineapple",
-		"quince", "raspberry", "strawberry", "tomato", "ugli fruit",
-		"victoria plum", "watermelon", "xigua", "yellow passionfruit", "zucchini"}
-
-	rand.Seed(time.Now().UnixNano())
-
 	scanner := bufio.NewScanner(os.Stdin)
 	score := 0
 
 	go func() {
 		for {
-			index := rand.Intn(len(words))
-			fmt.Println("Type:", words[index])
+			word := randomword.RandomWord()
+			fmt.Println("Type:", word)
 			for {
 				scanner.Scan()
 				input := scanner.Text()
-				if input == words[index] {
+				if input == word {
 					score++
 					break
 				}
-				fmt.Println("Type:", words[index])
+				fmt.Println("Type:", word)
 			}
 		}
 	}()
 
 	select {
-	case <-time.After(5 * time.Second):
+	case <-time.After(20 * time.Second):
 		fmt.Println("Time's up!")
 		fmt.Println("Score:", score)
 	}
